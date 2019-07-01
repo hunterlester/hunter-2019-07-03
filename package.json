@@ -1,0 +1,31 @@
+{
+  "name": "hunter-2019-07-03",
+  "version": "1.0.0",
+  "description": "File manager built with ParcelJS, React, and Express",
+  "main": "index.js",
+  "scripts": {
+    "build-watch": "parcel watch ./client/index.html",
+    "start-watch": "nodemon server/index.js",
+    "dev": "concurrently --kill-others \"yarn start-watch\" \"yarn build-watch\"",
+    "build": "parcel build ./client/index.html",
+    "start": "yarn build && node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.0.10",
+    "@types/webpack-env": "^1.13.9",
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1",
+    "parcel-bundler": "^1.12.3",
+    "react-hot-loader": "^4.12.0",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { FileBox } from '../components/FileBox';
 
 describe('FileBox', () => {
@@ -20,7 +20,27 @@ describe('FileBox', () => {
       fileBox = mount(<FileBox {...props} />);
   } );
 
-  it('renders an image', () => {
-    expect(fileBox.find('img').exists()).toBe(true);
+  describe('render', () => {
+     beforeEach( () =>  {
+         fileBox = shallow(<FileBox {...props} />);
+     } );
+     it('renders an image', () => {
+       expect(fileBox.find('img').exists()).toBe(true);
+     });
+
+     it('renders name text', () => {
+       expect(fileBox.find('p.text--large').text()).toEqual( props.file.name );
+     });
+
+     it('renders file size text', () => {
+       expect(fileBox.find('p.text--small').text()).toEqual( `${props.file.size}kB` );
+     });
+  });
+
+  describe('behavior', () => {
+      it('Calls deleteFile on button click', () => {
+        fileBox.find('button').simulate('click');
+        expect(props.deleteFile.mock.calls.length).toEqual(1);
+      } );
   });
 });

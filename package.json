@@ -9,16 +9,28 @@
     "dev": "concurrently --kill-others \"yarn start-watch\" \"yarn build-watch\"",
     "build": "parcel build ./client/index.html",
     "start": "yarn build && node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "setupFiles": [
+      "./setupTests.js"
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.15",
     "@types/node": "^12.0.10",
     "@types/react": "^16.8.22",
     "@types/webpack-env": "^1.13.9",
     "concurrently": "^4.1.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "jest": "^24.8.0",
     "nodemon": "^1.19.1",
     "parcel-bundler": "^1.12.3",
     "react-hot-loader": "^4.12.0",

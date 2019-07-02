@@ -5,8 +5,6 @@ const fileDb = new MockFileDB();
 
 // Gets all file resources
 router.get('/', async ( req, res, next ) => {
-    // handle search queries here
-    // Be sure to safely handle search queries as they are user input
     try {
         const files = await fileDb.get( req.query.search );
         res.json( files );
@@ -15,7 +13,7 @@ router.get('/', async ( req, res, next ) => {
     }
 });
 
-// Potential PATCH route to update meta file properties? Useful for resource description.
+// Potential PATCH route to update meta file properties? Useful for applying resource description definitions to images.
 
 // Posts file resource
 // Allow posting of multiple file resources?

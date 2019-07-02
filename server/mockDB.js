@@ -67,10 +67,9 @@ class MockFileDB {
         } );
     }
 
-    get(searchParams) {
+    get( searchParams ) {
         return new Promise( ( resolve, reject ) => {
             if ( searchParams !== undefined ) {
-                console.log(searchParams);
                 try {
                     const filteredFiles = Object.values( this._fileCache )
                         .filter( file => file.fileMeta.name.toLowerCase().includes( searchParams ) )

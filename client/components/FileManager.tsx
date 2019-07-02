@@ -78,6 +78,7 @@ export class FileManager extends Component<any, FileManagerState> {
         return (
             <div>
                 <div className="container container--2col container--2col-iphone">
+                    {/*  https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks */}
                     <input placeholder="Search documents..." onChange={( event ) => {
                         this.getFiles( event.target.value );
                     }} />

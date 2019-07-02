@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { hot } from 'react-hot-loader';
+import { FileManager } from './components/FileManager';
 
 interface Props {
     children: React.ReactNode;
@@ -21,7 +22,7 @@ if (module.hot) {
 
 render(
   <App>
-    <p>Initial view 5</p>
+    <FileManager />
   </App>,
   document.getElementById('root'),
 );

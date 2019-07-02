@@ -1,4 +1,4 @@
-class File {
+class FileContext {
     constructor(fileMeta) {
         if ( !fileMeta ) {
             throw new Error( "Please pass meta file object");
@@ -25,27 +25,14 @@ class File {
             throw new Error( "Meta file object must have properties: 'name', 'size', 'type', 'content'" );
         }
         // Should also validate value type 
+    }
 
+    get fileMeta() {
+        return this._fileMeta;
     }
 
     get id() {
         return this._fileMeta.id;
-    }
-
-    get name() {
-        return this._fileMeta.name;
-    }
-
-    get size() {
-        return this._fileMeta.size;
-    }
-
-    get type() {
-        return this._fileMeta.type;
-    }
-
-    get content() {
-        return this._fileMeta.content;
     }
 }
 
@@ -55,25 +42,21 @@ class MockFileDB {
     }
 
     // validate file object structure
-    post(file) {
+    post( fileData ) {
       return new Promise( ( resolve, reject ) => {
-          if ( this._fileCache[fileId] ) {
-              // Do I want to allow posting on an already existing resource?
-              reject( Error( "Unsuccessful post because resource already exists." ) );
-          } else {
-              try {
-                  const fileMeta = new File(file);
-                  this._fileCache[fileMeta.id] = fileMeta;
-                  resolve( fileMeta );
-              } catch ( err ) {
-                  reject( err );
-              }
+          try {
+              const fileContextIntstance = new FileContext( fileData );
+              this._fileCache[fileContextIntstance.id] = fileContextIntstance;
+              resolve( fileContextIntstance.fileMeta );
+          } catch ( err ) {
+              reject( err );
           }
       } );
     }
 
-    delete(fileId) {
+    delete( fileId ) {
         return new Promise( ( resolve, reject ) => {
+            console.log('file id: ', fileId);
             if ( this._fileCache[fileId] ) {
                 // Delete operation will return true even when called on key/value which does not exist
                 delete this._fileCache[fileId];

@@ -14,21 +14,29 @@ const REQUEST = {
 };
 
 export const deleteFile = async ( id: string ) => {
-    const response = await fetch( URL + id, {...REQUEST, method: 'DELETE' } as RequestInit );
-    return response;
+    try {
+        const response = await fetch( URL + id, {...REQUEST, method: 'DELETE' } as RequestInit );
+        return response;
+    } catch ( err ) {
+        throw err;
+    }
 };
 
 export const uploadFile = async ( file: File ) => {
     // Find alternative to JSON to stringify in order to properly sanitize request data
-    const response = await fetch( URL, {
-        ...REQUEST,
-        method: 'POST',
-        body: JSON.stringify(file),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    } as RequestInit );
-    return response.json();
+    try {
+        const response = await fetch( URL, {
+            ...REQUEST,
+            method: 'POST',
+            body: JSON.stringify(file),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        } as RequestInit );
+        return response.json();
+    } catch ( err ) {
+        throw err;
+    }
 };
 
 export const getFiles = async ( searchParam?: string ) => {
@@ -40,7 +48,6 @@ export const getFiles = async ( searchParam?: string ) => {
         const response = await fetch( url, { ...REQUEST } as RequestInit );
         return response.json();
     } catch ( err ) {
-        console.error( err );
-        return;
+        throw err;
     }
 };

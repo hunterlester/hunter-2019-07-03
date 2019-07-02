@@ -28,9 +28,11 @@ export class FileManager extends Component<any, FileManagerState> {
     }
 
     async getFiles( searchParam?: string ) {
-        const files = await fileOps.getFiles(searchParam);
-        if ( files ) {
+        try {
+            const files = await fileOps.getFiles(searchParam);
             this.setState( { files } );
+        } catch( err ) {
+            console.error( err );
         }
     }
 
@@ -64,6 +66,7 @@ export class FileManager extends Component<any, FileManagerState> {
                 } catch ( err ) {
                     console.error( err );
                     event.target.value = null;
+                    alert( err );
                 }
             });
             reader.readAsDataURL(file);

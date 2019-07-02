@@ -27,8 +27,8 @@ export class FileManager extends Component<any, FileManagerState> {
         this.getFiles();
     }
 
-    async getFiles() {
-        const files = await fileOps.getFiles();
+    async getFiles( searchParam?: string ) {
+        const files = await fileOps.getFiles(searchParam);
         if ( files ) {
             this.setState( { files } );
         }
@@ -62,7 +62,11 @@ export class FileManager extends Component<any, FileManagerState> {
 
     async deleteFile( fileId ) {
         try {
-            let _response = await fileOps.deleteFile( fileId );
+            let response = await fileOps.deleteFile( fileId );
+            if ( response && response.ok ) {
+                const files = this.state.files.filter( file => file.id !== fileId );
+                this.setState({ files });
+            }
         } catch ( err ) {
             console.error( err );
         }
@@ -71,11 +75,12 @@ export class FileManager extends Component<any, FileManagerState> {
     render() {
         const { files } = this.state;
         const totalFileSize = files.reduce( ( previousValue, currentValue ) => previousValue + currentValue.size, 0 );
-        console.log('render files: ', files);
         return (
             <div>
                 <div className="container container__user-input">
-                    <input placeholder="Search documents..." />
+                    <input placeholder="Search documents..." onChange={( event ) => {
+                        this.getFiles( event.target.value );
+                    }} />
                     <input type="file" onChange={this.uploadFile} />
                     <h3>{ files.length } documents</h3>
                     <h5>Total size: {totalFileSize}kB</h5>

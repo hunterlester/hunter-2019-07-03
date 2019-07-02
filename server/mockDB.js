@@ -56,7 +56,6 @@ class MockFileDB {
 
     delete( fileId ) {
         return new Promise( ( resolve, reject ) => {
-            console.log('file id: ', fileId);
             if ( this._fileCache[fileId] ) {
                 // Delete operation will return true even when called on key/value which does not exist
                 delete this._fileCache[fileId];
@@ -70,16 +69,20 @@ class MockFileDB {
 
     get(searchParams) {
         return new Promise( ( resolve, reject ) => {
-            if ( searchParams ) {
+            if ( searchParams !== undefined ) {
+                console.log(searchParams);
                 try {
-                    const filteredFiles = Object.values( this._fileCache ).filter( file => file.name.includes( searchParams ) );
+                    const filteredFiles = Object.values( this._fileCache )
+                        .filter( file => file.fileMeta.name.toLowerCase().includes( searchParams ) )
+                        .map( file => file.fileMeta );
+
                     resolve( filteredFiles );
                 } catch ( err ) {
                     reject( err );
                 }
             } else {
                 try {
-                    const files = Object.values( this._fileCache );
+                    const files = Object.values( this._fileCache ).map( file => file.fileMeta );
                     resolve( files );
                 } catch( err ) {
                     reject( err );

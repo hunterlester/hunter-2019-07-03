@@ -31,9 +31,13 @@ export const uploadFile = async ( file: File ) => {
     return response.json();
 };
 
-export const getFiles = async ( ) => {
+export const getFiles = async ( searchParam?: string ) => {
+    let url = URL;
+    if ( searchParam ) {
+        url += `?search=${searchParam}`;
+    }
     try {
-        const response = await fetch( URL, { ...REQUEST } as RequestInit );
+        const response = await fetch( url, { ...REQUEST } as RequestInit );
         return response.json();
     } catch ( err ) {
         console.error( err );

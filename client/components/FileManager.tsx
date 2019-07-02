@@ -77,15 +77,15 @@ export class FileManager extends Component<any, FileManagerState> {
         const totalFileSize = files.reduce( ( previousValue, currentValue ) => previousValue + currentValue.size, 0 );
         return (
             <div>
-                <div className="container container__user-input">
+                <div className="container container--2col container--2col-iphone">
                     <input placeholder="Search documents..." onChange={( event ) => {
                         this.getFiles( event.target.value );
                     }} />
                     <input type="file" onChange={this.uploadFile} />
-                    <h3>{ files.length } documents</h3>
-                    <h5>Total size: {totalFileSize}kB</h5>
+                    <p className="text--x-large text--no-margin">{ files.length } documents</p>
+                    <p className="text--medium text--no-margin text--right-desktop">Total size: {totalFileSize}kB</p>
                 </div>
-                <div className="container container__file-list">
+                <div className="container container--3col">
                     { files.map( file => <FileBox key={file.id} file={file} deleteFile={() => this.deleteFile( file.id )} /> ) }
                 </div>
             

@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { hot } from 'react-hot-loader';
 import { FileManager } from './components/FileManager';
+import './styles/base.scss';
 
 interface Props {
     children: React.ReactNode;

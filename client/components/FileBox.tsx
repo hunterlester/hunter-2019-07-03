@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { File as FileProps } from './FileManager';
 
 interface FileBoxProps {
@@ -6,23 +6,17 @@ interface FileBoxProps {
     deleteFile: ( id: string ) => void;
 }
 
-export class FileBox extends Component<FileBoxProps> {
-    constructor(props) {
-       super(props); 
-    }
-
-    render() {
-        const { file, deleteFile } = this.props;
-        const { id, name, size, type, content } = file;
-        return (
-            <div>
-                <p>{name}</p>
-                <div className="container">
-                    <p>{size}kB</p>
-                    <button type="button" onClick={() => deleteFile( id ) }>delete</button>
-                    <img src={content} />
-                </div>
+export const FileBox = ( props: FileBoxProps ) => {
+    const { file, deleteFile } = props;
+    const { id, name, size, content } = file;
+    return (
+        <div>
+            <div className="container container--2col">
+                <p className="text--large">{name}</p>
+                <img className="img--thumb" src={content} />
+                <p className="text--small">{size}kB</p>
+                <button type="button" onClick={() => deleteFile( id ) }>delete</button>
             </div>
-        );
-    }
+        </div>
+    );
 }

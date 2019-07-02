@@ -24,6 +24,13 @@ class FileContext {
         if ( !hasAllProperties ) {
             throw new Error( "Meta file object must have properties: 'name', 'size', 'type', 'content'" );
         }
+
+        const acceptedFileTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+        const isAccecptableFileType = acceptedFileTypes.some( ( mimeType ) => type === mimeType );
+        if ( !isAccecptableFileType ) {
+            throw new Error( "File does not conform to MIME types: image/png, image/jpeg, image/jpg" );
+        }
+
         // Should also validate value type 
     }
 

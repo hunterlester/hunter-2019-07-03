@@ -35,8 +35,16 @@ export class FileManager extends Component<any, FileManagerState> {
     }
 
     uploadFile( event ) {
+        event.persist();
         const reader  = new FileReader();
         const file = event.target.files[0];
+        const acceptedFileTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+        const isAccecptableFileType = acceptedFileTypes.some( ( type ) => file.type === type );
+        if ( !isAccecptableFileType ) {
+            alert( "Please choose either JPG or PNG images for upload" );
+            event.target.value = null;
+            return;
+        }
 
         if ( file ) {
             reader.addEventListener("load", async () => {
@@ -52,8 +60,10 @@ export class FileManager extends Component<any, FileManagerState> {
                     const responseFile = await fileOps.uploadFile( fileBody );
                     this.state.files.push( responseFile );
                     this.setState( { files: this.state.files } );
+                    event.target.value = null;
                 } catch ( err ) {
                     console.error( err );
+                    event.target.value = null;
                 }
             });
             reader.readAsDataURL(file);
@@ -79,7 +89,7 @@ export class FileManager extends Component<any, FileManagerState> {
             <div>
                 <div className="container container--2col container--2col-iphone">
                     {/*  https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks */}
-                    <input placeholder="Search documents..." onChange={( event ) => {
+                    <input accept="image/png,image/jpg,image/jpeg" placeholder="Search documents..." onChange={( event ) => {
                         this.getFiles( event.target.value );
                     }} />
                     <input type="file" onChange={this.uploadFile} />

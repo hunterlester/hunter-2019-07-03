@@ -59,8 +59,13 @@ export class FileManager extends Component<any, FileManagerState> {
                     id: null
                 }
                 try {
-                    const responseFile = await fileOps.uploadFile( fileBody );
-                    this.state.files.push( responseFile );
+                    const response = await fileOps.uploadFile( fileBody );
+                    if ( response.error ) {
+                        alert( response.error );
+                        event.target.value = null;
+                        return;
+                    }
+                    this.state.files.push( response );
                     this.setState( { files: this.state.files } );
                     event.target.value = null;
                 } catch ( err ) {

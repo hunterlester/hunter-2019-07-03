@@ -31,7 +31,14 @@ class FileContext {
             throw new Error( "File does not conform to MIME types: image/png, image/jpeg, image/jpg" );
         }
 
-        // Should also validate value type 
+        // I did not construct this regular expression. I made a minor modification to only allow specfied MIME types.
+        // Credit due to: https://www.npmjs.com/package/valid-data-url
+        const validDataUrlRegex = new RegExp(/^data:(image\/jpeg|image\/jpg|image\/png)(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)$/, 'i');
+        if ( !validDataUrlRegex.test( content ) ) {
+            throw new Error( "File content must be valid data URL and be one of the following MIME types: image/png, image/jpeg, image/jpg" );
+        }
+
+        // Should also validate value type, in addition to object-literal keys
     }
 
     get fileMeta() {

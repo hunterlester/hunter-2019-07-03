@@ -1,7 +1,7 @@
 class FileContext {
     constructor(fileMeta) {
         if ( !fileMeta ) {
-            throw new Error( "Please pass meta file object");
+            throw new Error( "Please pass file context object.");
         }
 
         const { name, size, type, content } = fileMeta;
@@ -31,14 +31,15 @@ class FileContext {
             throw new Error( "File does not conform to MIME types: image/png, image/jpeg, image/jpg" );
         }
 
+        // Security: Validates data URL strings and only allows image/jpeg, image/jpg, or image/png MIME types.
         // I did not construct this regular expression. I made a minor modification to only allow specfied MIME types.
         // Credit due to: https://www.npmjs.com/package/valid-data-url
-        const validDataUrlRegex = new RegExp(/^data:(image\/jpeg|image\/jpg|image\/png)(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)$/, 'i');
+        const validDataUrlRegex = new RegExp(/^data:(image\/(jpe?g|png))(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)$/, 'i');
         if ( !validDataUrlRegex.test( content ) ) {
             throw new Error( "File content must be valid data URL and be one of the following MIME types: image/png, image/jpeg, image/jpg" );
         }
 
-        // Should also validate value type, in addition to object-literal keys
+        // TODO: Should also validate value type, in addition to object-literal keys
     }
 
     get fileMeta() {
@@ -55,7 +56,6 @@ class MockFileDB {
         this._fileCache = {};
     }
 
-    // validate file object structure
     post( fileData ) {
       return new Promise( ( resolve, reject ) => {
           try {
@@ -71,7 +71,7 @@ class MockFileDB {
     delete( fileId ) {
         return new Promise( ( resolve, reject ) => {
             if ( this._fileCache[fileId] ) {
-                // Delete operation will return true even when called on key/value which does not exist
+                // Delete operation will return true even when called on key/value which does not exist.
                 delete this._fileCache[fileId];
                 this._fileCache = { ...this._fileCache };
                 resolve( );

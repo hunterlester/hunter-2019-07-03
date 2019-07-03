@@ -15,8 +15,9 @@ function errorHandler ( err, _req, res, _next ) {
 }
 
 app.use( helmet() );
-// TODO: Provide separate directives configuration for NODE_ENV=production,
+// Security: Provide separate directives configuration for NODE_ENV=production,
 // as the following is inteneded for a development environment.
+// Evaluate policies: https://csp-evaluator.withgoogle.com/
 app.use( helmet.contentSecurityPolicy( {
   directives: {
     defaultSrc: ["'none'", "localhost:3000", "ws:", "data:"],
@@ -26,7 +27,6 @@ app.use( helmet.contentSecurityPolicy( {
 } ) );
 app.use( express.static( 'dist' ) );
 app.use( bodyParser.json( { limit: '10mb' } ) );
-// TODO: url encoding middleware, research options
 app.use( bodyParser.urlencoded( { extended: false } ) );
 
 app.use( '/files', fileResourceRouter );

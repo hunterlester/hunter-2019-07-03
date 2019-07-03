@@ -20,13 +20,16 @@
 - Not Addressed
   - Server API endpoints are not protected with authentication token, so any user-agent may make requests to server.
 ## Improvements
-- Standard resource description definitions added to image meta files to make search more interesting for user
+- Standard resource description definitions added to image meta files to make search more interesting for user. To that end, add a PATCH route if the goal was to implement linked data.
 - User management and authentication
 - File directory organization
 - Lazy-loading of images so that they are only loaded when user scrolls to img elements
 - Instead of directly storing images in database as data URL's, it would improve performance to upload images to a CDN service, then store a URL reference to the image in the database along with other file context metadata
 - Go through a CSP configuration process of setting a strict policy to block all sources and report-only, then analyze which origins should be whitelisted
 - CSP script-src is currently `'self'`. For production, change policy to `'strict-dynamic' 'nonce-<nonce | hash>` to only allow our built JS scripts.
+- Increase code coverage with more unit tests
+- Configure TestCafe to write e2e integration tests
+- Write integration tests for frontend asynchronous fetch operations
 ## Libraries
 - sass: Added by ParcelJS to support scss files
 - @babel/core: Added by ParcelJS to expose Babel transform API
@@ -78,4 +81,5 @@
 ---
 ## Other notes
 - Fire up Postman while the server is running at `localhost:3000` to try out API endpoints and to observe error handling differences compared to client application
-- Personal note to study OWASP cheatsheets: https://github.com/OWASP/CheatSheetSeries/tree/master/cheatsheets
+- grep files for `Security:` annotations for areas of interest and `TODO:` for extra thoughts on improvement 
+- Note to self to study OWASP cheatsheets: https://github.com/OWASP/CheatSheetSeries/tree/master/cheatsheets

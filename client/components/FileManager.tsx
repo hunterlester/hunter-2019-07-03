@@ -102,10 +102,11 @@ export class FileManager extends Component<any, FileManagerState> {
         return (
             <div>
                 <div className="container container--2col container--2col-iphone">
-                    {/*  https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks */}
+                    {/* Security: https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks */}
                     <input className="search" accept="image/png,image/jpg,image/jpeg" placeholder="Search documents..." onChange={( event ) => {
                         this.getFiles( event.target.value );
                     }} />
+                    {/* Security: Read about attack vectors associated with file uploads */}
                     <input type="file" onChange={( event ) => { this.uploadFile( event ); } } />
                     <p className="text--x-large text--no-margin">{ files.length } documents</p>
                     <p className="text--medium text--no-margin text--right-desktop">Total size: {totalFileSize}kB</p>

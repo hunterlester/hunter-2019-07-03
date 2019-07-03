@@ -15,6 +15,8 @@ function errorHandler ( err, _req, res, _next ) {
 }
 
 app.use( helmet() );
+// TODO: Provide separate directives configuration for NODE_ENV=production,
+// as the following is inteneded for a development environment.
 app.use( helmet.contentSecurityPolicy( {
   directives: {
     defaultSrc: ["'none'", "localhost:3000", "ws:", "data:"],

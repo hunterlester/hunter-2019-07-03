@@ -5,24 +5,27 @@
   - Yarn 1.13.x
 - Run `yarn`
 - Run `yarn start`
+- Navigate to `localhost:3000` in web browser
 ## Security
-- Images are stored as data URL's and passed to img-src for rendering. It is possible for a user to POST content that is not a valid data URL and which contains arbitrary data, which may or may not be malicious but will certainly break the client application
-  - In production, I'd upload validated images to a CDN service, whitelist the CDN URI for image-src, then store CDN image URL's in the database, passing those CDN URL's to img-src.
-  - For this exercise, the mock DB restricts uploads to valid data URL's and specific MIME types: image/png image/jpeg image/jpg, to narrow potential attack surface, however, documentation on the matter asserts that scripts cannot be executed via img-src.
+- Images are stored as data URL's and passed to img-src for rendering, which may expose potential security vulnerability. It is possible for a user to POST a resource containing an invalid data URL or which contains arbitrary data, which may or may not be malicious but will certainly break the client application.
+  - In production, I'd upload validated images to a CDN service, whitelist the CDN URI on image-src policy, then store CDN image URL's in the database, passing those CDN URL's to img-src attribute.
+  - For this exercise, the mock DB restricts uploads to valid data URL's and specific MIME types: `image/png, image/jpeg, image/jpg`, to narrow potential attack surface, however, documentation on the matter asserts that scripts cannot be executed via img-src attribute.
     - See: https://blog.mozilla.org/security/2017/11/27/blocking-top-level-navigations-data-urls-firefox-59/
+    - See: https://developer.mozilla.org/en-US/docs/Web/SVG/SVG_as_an_Image#Restrictions
     - See: https://security.stackexchange.com/a/167244
-- Adddressed
+- Addressed
   - React handles input sanitization
-  - Set server Content security policy header
+  - Set server content security policy header
+  - Data URL's are validated 
 - Not Addressed
   - Server API endpoints are not protected with authentication token, so any user-agent may make requests to server.
 ## Improvements
-- Standard resource description definitions added to image files to make search more interesting for user
+- Standard resource description definitions added to image meta files to make search more interesting for user
 - User management and authentication
 - File directory organization
 - Lazy-loading of images so that they are only loaded when user scrolls to img elements
-- Instead of directly storing images in database as data URL's, it would improve performance to upload images to a CDN service, then store a URL reference to the image   
-- Go through a CSP configuration process of setting a strict policy to block all source and report-only, then analyze which origins should be whitelisted
+- Instead of directly storing images in database as data URL's, it would improve performance to upload images to a CDN service, then store a URL reference to the image in the database along with other file context metadata
+- Go through a CSP configuration process of setting a strict policy to block all sources and report-only, then analyze which origins should be whitelisted
 - CSP script-src is currently `'self'`. For production, change policy to `'strict-dynamic' 'nonce-<nonce | hash>` to only allow our built JS scripts.
 ## Libraries
 - sass: Added by ParcelJS to support scss files
@@ -33,12 +36,12 @@
 - concurrently: To run server-side and client-side watch commands simultaneously, as they don't return, so `command1 && command2` is not possible.
 - typescript: TypeScript support
 - body-parser: Express middleware to handle parsing of JSON and URL-encoded data
-- express: server
-- react: client view
+- express: Node.js server library
+- react: React components 
 - react-dom: Allows React components to be mounted on the document object model
 - helmet: Content security policy middleware for express
 
-- Dependencies primarily for testing React components, especially for TypeScript to recognize undeclared types while running tests:
+- Dependencies primarily for unit testing React components, especially for TypeScript to recognize undeclared types while running tests:
      - @babel/preset-env
      - @babel/preset-react
      - @babel/preset-typescript
@@ -50,7 +53,6 @@
      - enzyme-adapter-react-16
      - jest
 ## API
-// Any general observation about the API?
 ### GET `/files?search=<string>`
 - Requests all file resources from database
 - Optionally accepts a query parameter to search and return matching file names
@@ -75,5 +77,5 @@
 - Returns single valid file resource
 ---
 ## Other notes
-// Anything else you want to mention
+- Fire up Postman while the server is running at `localhost:3000` to try out API endpoints and to observe error handling differences compared to client application
 - Personal note to study OWASP cheatsheets: https://github.com/OWASP/CheatSheetSeries/tree/master/cheatsheets

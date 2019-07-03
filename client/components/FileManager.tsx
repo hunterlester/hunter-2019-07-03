@@ -28,9 +28,14 @@ export class FileManager extends Component<any, FileManagerState> {
     }
 
     async getFiles( searchParam?: string ) {
+        const { files } = this.state;
         try {
-            const files = await fileOps.getFiles(searchParam);
-            this.setState( { files } );
+            const filesArray = await fileOps.getFiles(searchParam);
+            if ( filesArray ) {
+                this.setState( { files: filesArray } );
+            } else {
+                this.setState( { files } );
+            }
         } catch( err ) {
             console.error( err );
         }
@@ -40,6 +45,7 @@ export class FileManager extends Component<any, FileManagerState> {
         event.persist();
         const reader  = new FileReader();
         const file = event.target.files[0];
+        if ( !file ) return;
         const acceptedFileTypes = ['image/png', 'image/jpg', 'image/jpeg'];
         const isAccecptableFileType = acceptedFileTypes.some( ( type ) => file.type === type );
         if ( !isAccecptableFileType ) {
@@ -97,10 +103,10 @@ export class FileManager extends Component<any, FileManagerState> {
             <div>
                 <div className="container container--2col container--2col-iphone">
                     {/*  https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks */}
-                    <input accept="image/png,image/jpg,image/jpeg" placeholder="Search documents..." onChange={( event ) => {
+                    <input className="search" accept="image/png,image/jpg,image/jpeg" placeholder="Search documents..." onChange={( event ) => {
                         this.getFiles( event.target.value );
                     }} />
-                    <input type="file" onChange={this.uploadFile} />
+                    <input type="file" onChange={( event ) => { this.uploadFile( event ); } } />
                     <p className="text--x-large text--no-margin">{ files.length } documents</p>
                     <p className="text--medium text--no-margin text--right-desktop">Total size: {totalFileSize}kB</p>
                 </div>
